@@ -1,0 +1,165 @@
+/* 
+  Localizable.strings
+  FoodieProvider
+
+  Created by APPLE on 9/15/17.
+  Copyright © 2017 Tanjara Infotech. All rights reserved.
+*/
+
+
+/*Sign In */
+
+ /** Textfield Text **/
+
+"ENTERTXTMOBILE" = "Mobile Number";
+"SIGNINBUTTONNAME" = "CONTINUE";
+
+/* Verification Code */
+
+/** Textfield Text **/
+
+"VERIFYCODELABEL" = "Verfication Code";
+"PLEASEENTEROTP" = "Please type the verfication code sent to your";
+"DIDNTGETOTPLABEL" = "Didn't get the OTP?";
+"RESENDOTPLABEL" = "Resend OTP";
+
+
+/* Shift Status */
+
+/** Top View **/
+
+"TOPLABEL" = "SHIFT STATUS";
+
+/*** Middle View ***/
+
+"TAPSHIFTLABEL" = "Turn on Start Shift to go for delivery";
+"SHIFTSTARTBUTTONTEXT" = "START SHIFT";
+"SHIFTENDBUTTONTEXT" = "END SHIFT";
+
+/**** POP View ****/
+
+"ENTERLBL" = "Enter you vehicle number";
+"SELECTVEHICLELABEL" = "Select your vehicle number";
+"NOVEHICLELABEL" = "No Vehicle Found";
+"NOVEHICLEFOUND" = "No Vehicle found for this Number. Please enter your Vehicle number Below";
+"ORLBL" = "OR";
+"CONTINUEBTN" = "CONTINUE";
+"PLEASEENTERLBL" = "Please Enter you vehicle number";
+
+/****** Shift TableView ******/
+
+"STARTSHIFTLABEL" = "Start Shift";
+"YOUOWEDLABEL" = "You Owed";
+
+
+
+/* Live Task */
+
+"LIVETASKLBL" = "LIVE TASK";
+"WAITINGFORTASKLBL" = "WAITING FOR THE NEW TASK";
+"NEWTASKLABEL" = "New Task";
+"NEWORDERREQUESTLABEL" = "New order request";
+"COMPLETEDTASKLABEL" = "Completed Tasks";
+"PLEASESETTLEAMOUNTLABEL" = "Please settle the Amount to the respective restaurant";
+"PLEASESTARTSHIFTLABEL" = "Please start the Shift";
+"PAYMENTLABELTYPE" = "PAYMENT";
+
+"CALLNAMEBTN" = "CALL";
+"CANCELNAMEBTN" = "CANCEL";
+
+
+
+/*** LIVE detail Task Label ***/
+
+"NAVMENULABEL" = "LIVE TASK";
+"LIVETASKTIME" = "Time Left";
+"ITEMTOTALLABEL" = "Item total";
+"SERVICETAX" = "Service Tax";
+"DELIVERYCHANGESLABEL" = "Delivery Charges";
+"DISCOUNTLABEL" = "Discount";
+"TOTALLABEL" = "Total";
+"COMPLETEDLABEL" = "COMPLETED";
+"STARTEDBUTTON" = "STARTED TOWARDS RESTAURENT";
+"REACHEDRESTAURENTBUTTON" = "REACHED RESTAURENT";
+"ORDERPICKEDUPBTN" = "ORDER PICKED UP";
+"ORDERPROCESSEDLBL" = "ORDER PROCESSED";
+"ORDERDELIVEREDBTN" = "ORDER DELIVERED";
+"PAIDBTN" = "PAID";
+"PAYMENTRECEIVED" = "PAYMENT RECEIVED";
+"PAYMENTALERT" = "Please enter the amount customer gave";
+"CORRECTAMOUNT" = "Please enter the amount to be paid";
+"SUBMITBTN" = "SUBMIT";
+"ESTIMATIONLABEL" = "Est. Time:";
+"WALLETDEDUCTIONLABEL" = "Wallet deduction";
+
+
+
+/****** Order TableView ******/
+
+"ORDERNAVLABEL" = "ORDER HISTORY";
+"NOOFITEMSINDETAILSLABEL" = "No. of Items";
+"BILLAMOUNTLABEL" = "Bill Amount";
+"BILLPAIDLABEL" = "Bill Paid";
+"RETURNEDLABEL" = "Returned";
+"NORESULTFOUNDLABEL" = "No Result Found";
+"NONOTICEFOUNDLABEL" = "No Notice Found";
+
+
+/****** Notice Board ******/
+
+"NOTICENAVLABEL" = "NOTICE BOARD";
+
+/****** REPORT Board ******/
+
+"REPORTNAVLABEL" = "REPORT";
+"DISPUTENAVLABEL" = "DISPUTE";
+"DISPUTEMANAGERNAVLABEL" = "DISPUTE MANAGER";
+"RAISEDISPUTELABEL" = "Please call the dispute manager";
+
+
+"HELPNAVLABEL" = "HELP";
+
+/****** Dispute Text Board ******/
+
+"REASONTEXT" = "Reason";
+"DISPUTETEXT" = "Are you facing any issues which we can assist with ? Please reach out to us and we will be happy to help!";
+"CHATUSTEXT" = "CHAT US";
+"CALLUSTEXT" = "CALL US";
+
+"ORDERTEXT" = "ORDER ID";
+
+/* PROFILE */
+
+"PROFILENAVLABEL" = "PROFILE";
+"USERNAMELABEL" = "USERNAME";
+"USERIDLABEL" = "USER ID";
+"MOBILENUMBERLABEL" = "MOBILE NUMBER";
+"PROFEMAILADDRESSLABEL" = "EMAIL ADDRESS";
+
+
+/*Enter fields*/
+
+"ENTERMOBILE" = "Please enter your Mobile Number";
+"ENTERPASSWORD" = "Please enter your Password";
+"ENTERNAME" = "Please enter your Name";
+"ENTEREMAIL" = "Please enter the Email address";
+"ENTERUSERNAME" = "Please enter your Username";
+"ENTEROTP" = "Please enter the OTP you received";
+"ENTERUSERID" = "Please enter your user ID";
+
+/** Chatting Sequence **/
+
+"CHATNAVLABEL" = "CHAT";
+
+/* Validation */
+
+"VALIDATEEMAIL" = "Please enter valid email address";
+"VALIDATEPASSWORD" = "Password should contain atleast 6 characters";
+"VALIDATEMOBILE" = "Please enter the valid Mobile number";
+"VALIDATEPASSWORDFIELDS" = "Password and Re-enter password is not same";
+"CHKNET" = "Please check your Internet Connection";
+"CHKOTP" = "Please enter the OTP you received";
+
+
+
+

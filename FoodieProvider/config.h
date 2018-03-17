@@ -1,0 +1,53 @@
+
+// Config Files Contains URL, Colors, Validations
+
+
+#define RGB(r, g, b) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:1]
+
+
+#define INPUTLENGTH 255
+
+#define PHONELENGTH 15
+
+#define PASSWORDLENGTH 20
+
+#define BASECOLOR RGB(255, 109, 0)
+
+#define BGCOLOR RGB(246, 246, 246)
+
+#define GRAYCOLOR RGB(246, 246, 246)
+
+#define BLACK RGB(0, 0, 0)
+
+#define WHITE RGB(255, 255, 255)
+
+#define DESCCOLOR RGB(178, 178, 178)
+
+#define LIGHTGRAYBG RGB(239, 239, 239)
+
+#define DESCDARKCOLOR RGB(77, 77, 77)
+
+#define BASETEXT RGB(69, 75, 83)
+
+#define LIVETASKCOLOR RGB(255, 77, 42)
+
+#define COMPLETEDTASK RGB(220, 220, 220)
+
+#define LIGHTGRAYFORLINE RGB(233, 233, 233)
+
+#define DARKGRAYFORLINE RGB(229, 229, 229)
+
+#define UPCOMINGCOLOR RGB(136, 136, 136)
+
+#define ORDERSTATUSSUCCESSCOLOR RGB(114, 141, 80)
+#define ORDERSTATUSCANCELLSCOLOR RGB(114, 141, 80)
+
+
+#define COMPLETEDTASKCOLOR RGB(80, 80, 80)
+
+#define CHATBG RGB(251, 251, 251)
+
+
+
+
+
