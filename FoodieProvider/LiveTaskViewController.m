@@ -416,6 +416,12 @@
         return 0;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 160;
+}
+
+
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
     
     if (section == 0) {
