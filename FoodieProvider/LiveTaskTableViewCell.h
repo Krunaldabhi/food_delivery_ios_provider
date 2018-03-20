@@ -24,6 +24,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *waitingtaskLbl;
 @property (weak, nonatomic) IBOutlet UIView *waitingView;
 @property (weak, nonatomic) IBOutlet UIImageView *waitingImg;
+@property (weak, nonatomic) IBOutlet UIButton *acceptBtn;
+@property (weak, nonatomic) IBOutlet UIButton *rejectBtn;
 
 -(void)roundView:(UIView *)view onCorner:(UIRectCorner)rectCorner radius:(float)radius;
 

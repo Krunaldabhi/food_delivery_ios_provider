@@ -845,7 +845,7 @@
                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                             <subviews>
                                                                 <label autoresizesSubviews="NO" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xDk-kh-07x">
-                                                                    <rect key="frame" x="8" y="5" width="120" height="20"/>
+                                                                    <rect key="frame" x="8" y="5" width="150" height="20"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <nil key="textColor"/>
@@ -907,11 +907,13 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="acceptBtn" destination="fUo-7c-Xl2" id="So6-wL-zhi"/>
                                             <outlet property="celltopView" destination="dq1-UH-1qs" id="dg0-dE-c25"/>
                                             <outlet property="fewSecondAgo" destination="L4H-XP-gGc" id="YKr-Et-iVi"/>
                                             <outlet property="listcontentView" destination="xzr-s5-DP8" id="c7W-hX-kJd"/>
                                             <outlet property="orderImg" destination="y0W-jE-J8d" id="l1h-r9-2MH"/>
                                             <outlet property="orderLbl" destination="LYm-t9-2mE" id="C6C-h8-b1A"/>
+                                            <outlet property="rejectBtn" destination="r6L-A9-hD1" id="d6s-hq-3Qx"/>
                                             <outlet property="restaurentName" destination="gWu-Vo-b6Q" id="eCt-sP-x8m"/>
                                             <outlet property="topOrderLabel" destination="xDk-kh-07x" id="1lB-fG-ssJ"/>
                                             <outlet property="waitingImg" destination="OS9-S4-MA6" id="HWH-sO-lHe"/>

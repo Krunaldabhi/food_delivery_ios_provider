@@ -34,6 +34,7 @@
     NSTimer * timerTOCallServer;
     NSTimer * timerTOupdateLocation;
     NSString *statusStr, *orderIdStr;
+    LiveTaskTableViewCell *liveTaskCell;
 
 }
 
@@ -473,7 +474,8 @@
             if (getLivetaskArr.count == 0) {
                 
                 cell.waitingView.hidden = NO;
-                
+                cell.listcontentView.hidden = YES;
+
                 if ([self.liveTaskObj.transporterObj.status isEqualToString:@"unsettled"]) {
                     
                     cell.waitingImg.image = [UIImage imageNamed:@"handOverCash"];
@@ -499,7 +501,8 @@
             else{
                 
                 cell.waitingView.hidden = YES;
-                
+                cell.listcontentView.hidden = NO;
+
                 self.liveTaskObj = (LiveTaskObj *)[getLivetaskArr objectAtIndex:indexPath.row];
                 
                 cell.celltopView.backgroundColor = LIVETASKCOLOR;
@@ -521,8 +524,18 @@
                     NSString *str = [NSString stringWithFormat:@"%d secs left",secondsLeft];
                     cell.fewSecondAgo.text =str;
                     cell.fewSecondAgo.textColor = [UIColor whiteColor];
+                    cell.acceptBtn.hidden = NO;
+                    cell.rejectBtn.hidden = NO;
+                    cell.acceptBtn.tag = indexPath.row;
+                    cell.rejectBtn.tag = indexPath.row;
+
+                    [cell.acceptBtn addTarget:self action:@selector(acceptBtnAction:) forControlEvents:UIControlEventTouchUpInside];
+                    
+                    [cell.rejectBtn addTarget:self action:@selector(rejectBtnAction:) forControlEvents:UIControlEventTouchUpInside];
                 }else{
                     cell.fewSecondAgo.hidden = YES;
+                    cell.acceptBtn.hidden = YES;
+                    cell.rejectBtn.hidden = YES;
                 }
                 
                 cell.restaurentName.text = self.liveTaskObj.shopObj.name;
@@ -535,7 +548,10 @@
             
             self.liveTaskObj = (LiveTaskObj *)[completedfoodArr objectAtIndex:indexPath.row];
             cell.waitingView.hidden = YES;
-            
+            cell.acceptBtn.hidden = YES;
+            cell.rejectBtn.hidden = YES;
+            cell.listcontentView.hidden = NO;
+
             cell.topOrderLabel.textColor = [UIColor whiteColor];
             cell.fewSecondAgo.textColor = [UIColor whiteColor];
             
@@ -562,7 +578,7 @@
             [Theme regularFontlabel:cell.fewSecondAgo];
             cell.fewSecondAgo.textColor = [UIColor whiteColor];
             cell.fewSecondAgo.text = @"";
-            
+           
             cell.orderImg.layer.cornerRadius = 4;
             
             [Theme regularFontlabel:cell.restaurentName];
@@ -584,7 +600,7 @@
     return cell;
 }
 
--(void)cellDataInsert:(LiveTaskTableViewCell *)getCell liveObject:(LiveTaskObj *)getObj{
+- (void)cellDataInsert:(LiveTaskTableViewCell *)getCell liveObject:(LiveTaskObj *)getObj{
 
 }
 
@@ -595,28 +611,27 @@
         if (getLivetaskArr.count != 0) {
             if ([statusStr isEqualToString:@"SEARCHING"]) {
                 
-                //                NSString *orderId = [NSString stringWithFormat:@"%@", _liveTaskObj.orderIdStr];
-                UIAlertController *actionSheet =
-                
-                [UIAlertController alertControllerWithTitle:@"" message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
-                
-                [actionSheet addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-                    
-                    // Cancel button tappped.
-                    [self dismissViewControllerAnimated:YES completion:^{
-                        
-                    }];
-                }]];
-                
-                [actionSheet addAction:[UIAlertAction actionWithTitle:@"Accept" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-                    [self acceptRejectTask :@"ACCEPT"];
-                }]];
-                
-                [actionSheet addAction:[UIAlertAction actionWithTitle:@"Reject" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-                    [self acceptRejectTask :@"REJECT"];
-                }]];
-                // Present action sheet.
-                [self presentViewController:actionSheet animated:YES completion:nil];
+//                UIAlertController *actionSheet =
+//
+//                [UIAlertController alertControllerWithTitle:@"" message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
+//
+//                [actionSheet addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+//
+//                    // Cancel button tappped.
+//                    [self dismissViewControllerAnimated:YES completion:^{
+//
+//                    }];
+//                }]];
+//
+//                [actionSheet addAction:[UIAlertAction actionWithTitle:@"Accept" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//                    [self acceptRejectTask :@"ACCEPT"];
+//                }]];
+//
+//                [actionSheet addAction:[UIAlertAction actionWithTitle:@"Reject" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//                    [self acceptRejectTask :@"REJECT"];
+//                }]];
+//                // Present action sheet.
+//                [self presentViewController:actionSheet animated:YES completion:nil];
                 
             }
             else{
@@ -646,6 +661,34 @@
 
     [self LeftMenuView];
     
+}
+
+- (void)acceptBtnAction:(id)sender
+{
+    UIButton *button = (UIButton *)sender;
+    
+    CGRect btnFrame = [button convertRect:button.bounds toView:_listTableView];
+    NSIndexPath *indexPath = [_listTableView indexPathForRowAtPoint:btnFrame.origin];
+    NSLog(@"Selected Section: %lu", (unsigned long)indexPath.section);
+    NSLog(@"Selected IndexPath: %lu", (unsigned long)indexPath.row);
+    
+    liveTaskCell = (LiveTaskTableViewCell *)[_listTableView cellForRowAtIndexPath:indexPath];
+    
+    [self acceptRejectTask:@"ACCEPT"];
+}
+
+- (void)rejectBtnAction:(id)sender
+{
+    UIButton *button = (UIButton *)sender;
+    
+    CGRect btnFrame = [button convertRect:button.bounds toView:_listTableView];
+    NSIndexPath *indexPath = [_listTableView indexPathForRowAtPoint:btnFrame.origin];
+    NSLog(@"Selected Section: %lu", (unsigned long)indexPath.section);
+    NSLog(@"Selected IndexPath: %lu", (unsigned long)indexPath.row);
+    
+    liveTaskCell = (LiveTaskTableViewCell *)[_listTableView cellForRowAtIndexPath:indexPath];
+    
+    [self acceptRejectTask:@"REJECT"];
 }
 
 /***** MENU GESTURE ******/
