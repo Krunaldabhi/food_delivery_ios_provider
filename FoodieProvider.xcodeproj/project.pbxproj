@@ -1445,8 +1445,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.deliveraround.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "80867cfc-ff6b-409b-a1f1-3b4b6d3c2979";
-				PROVISIONING_PROFILE_SPECIFIER = DeliverAround_12Mar18;
+				PROVISIONING_PROFILE = "071eff1c-518f-467b-afce-4897fc36c305";
+				PROVISIONING_PROFILE_SPECIFIER = DeliverAround_20Mar18;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -1468,8 +1468,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.deliveraround.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "80867cfc-ff6b-409b-a1f1-3b4b6d3c2979";
-				PROVISIONING_PROFILE_SPECIFIER = DeliverAround_12Mar18;
+				PROVISIONING_PROFILE = "071eff1c-518f-467b-afce-4897fc36c305";
+				PROVISIONING_PROFILE_SPECIFIER = DeliverAround_20Mar18;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

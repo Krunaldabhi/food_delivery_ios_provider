@@ -16,11 +16,11 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
 
-    self.itemName.font = [UIFont fontWithName:FONT_SEMIBOLD size:15.0];
+    self.itemName.font = [UIFont fontWithName:FONT_SEMIBOLD size:13.0];
     
     self.itemName.textColor = BLACK;
     
-    self.itemPrice.font = [UIFont fontWithName:FONT_SEMIBOLD size:15.0];
+    self.itemPrice.font = [UIFont fontWithName:FONT_SEMIBOLD size:14.0];
     self.itemPrice.textColor = BLACK;
     
     self.addOnsLbl.font = [UIFont fontWithName:FONT_REGULAR size:12.0];
@@ -28,7 +28,7 @@
 
     
     self.itemQuantity.textColor = BLACK;
-    self.itemQuantity.font = [UIFont fontWithName:FONT_SEMIBOLD size:15.0];
+    self.itemQuantity.font = [UIFont fontWithName:FONT_SEMIBOLD size:14.0];
 
     self.mutliplyLbl.textColor = BLACK;
     self.mutliplyLbl.text = @"*";
