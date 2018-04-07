@@ -691,7 +691,7 @@ BOOL STARTED = NO;
     }
     else{
         
-        self.balanceAmountLbl.text = [self makeSubraction:self.enterAmountTxtField.text getSecond:self.amountFrmCustomerLbl.text];
+        self.balanceAmountLbl.text = [NSString stringWithFormat:@"%@%@",CURRENCY, [self makeSubraction:self.enterAmountTxtField.text getSecond:self.amountFrmCustomerLbl.text]];
     }
     
     [UIView animateWithDuration:0.3 animations:^{

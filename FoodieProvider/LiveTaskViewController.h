@@ -22,6 +22,8 @@
     LeftMenuView *leftMenuViewClass;
     UIView * waitingBGView;
     int secondsLeft;
+    NSString *responseTimeStr;
+
 }
 @property(nonatomic, strong) NSTimer *timer;
 

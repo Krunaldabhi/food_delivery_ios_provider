@@ -19,6 +19,7 @@
 #import "Utilities.h"
 #import "LiveTaskObj.h"
 #import "SignInViewController.h"
+#import "LiveTaskIncomeTableViewCell.h"
 
 
 @interface LiveTaskViewController ()<UITableViewDelegate, UITableViewDataSource,UIGestureRecognizerDelegate>{
@@ -35,6 +36,7 @@
     NSTimer * timerTOupdateLocation;
     NSString *statusStr, *orderIdStr;
     LiveTaskTableViewCell *liveTaskCell;
+    NSString *responseTimeValidateStr;
 
 }
 
@@ -73,18 +75,17 @@
     [Theme regularFontlabel:self.noTaskLbl];
     
     [self timerSequences];
-    
+    responseTimeValidateStr = @"0";
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(checkOrderRequest)
                                                  name:@"receiveMessage"
                                                object:nil];
     
-    
 }
 
 -(void)timerSequences{
     
-  timerTOCallServer =  [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(checkOrderRequest) userInfo:nil repeats:YES];
+  timerTOCallServer =  [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(checkOrderRequest) userInfo:nil repeats:YES];
 //  timerTOupdateLocation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(updateLocation) userInfo:nil repeats:YES];
     
 }
@@ -193,7 +194,7 @@
                     [self getCompletedRequest];
                     
                     if (response.count == 0) {
-                        
+                        statusStr=@"";
                         getLivetaskArr = [NSMutableArray arrayWithArray:response];
 
                     }
@@ -201,6 +202,20 @@
                     {
                         statusStr = [[response valueForKey:@"status"]objectAtIndex:0];
                         orderIdStr = [NSString stringWithFormat:@"%@", [[response valueForKey:@"id"]objectAtIndex:0]];
+                        if ([statusStr isEqualToString:@"SEARCHING"]) {
+                            
+                            if ([responseTimeValidateStr isEqualToString:@"0"]) {
+                                responseTimeValidateStr = @"1";
+                                  responseTimeStr = [NSString stringWithFormat:@"%@", [[response valueForKey:@"response_time"]objectAtIndex:0]];
+                                secondsLeft = [responseTimeStr intValue];
+
+                                _timer=[NSTimer scheduledTimerWithTimeInterval:1.0
+                                                                        target:self
+                                                                      selector:@selector(updateCounter:)
+                                                                      userInfo:nil
+                                                                       repeats:YES];
+                            }
+                        }
                         getLivetaskArr = [[NSMutableArray alloc]init];
                         
                         self.whiteView.hidden = YES;
@@ -211,18 +226,16 @@
                         NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
                         CURRENCY = [userDefaults objectForKey:@"currency"];
                         
+
                         self.liveTaskObj = [[LiveTaskObj alloc]initWithDictionary:response[0]];
                         
                         [getLivetaskArr addObject:self.liveTaskObj];
                         
                         [self.listTableView reloadData];
                         
-                        [timerTOCallServer invalidate];
+                      //  [timerTOCallServer invalidate];
                         
-                        if ([statusStr isEqualToString:@"SEARCHING"]) {
-                            secondsLeft = [[[response valueForKey:@"response_time"] objectAtIndex:0]intValue];
-                            [self countdownTimer];
-                        }
+
                     }
                     
                 });
@@ -242,12 +255,18 @@
 
 - (void)updateCounter:(NSTimer *)theTimer
 {
-    if(secondsLeft > 0 ) {
-        secondsLeft -- ;
+    secondsLeft = secondsLeft-1;
+
+    responseTimeStr = [NSString stringWithFormat:@"%d", secondsLeft];
+
+    if(secondsLeft >=0 ) {
         [self.listTableView reloadData];
     } else {
         secondsLeft = 0;
+        responseTimeValidateStr = @"0";
+        statusStr = @"";
         [_timer invalidate];
+        [self checkOrderRequest];
         getLivetaskArr = [[NSMutableArray alloc]init];
         [self.listTableView reloadData];
     }
@@ -419,7 +438,22 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 160;
+    if (indexPath.section == 0) {
+        if ([statusStr isEqualToString:@"SEARCHING"]){
+            if (getLivetaskArr.count == 0) {
+                return 140;
+            }
+            else{
+                return 185;
+            }
+        }
+        else{
+            return 140;
+        }
+    }
+    else{
+        return 140;
+    }
 }
 
 
@@ -466,43 +500,42 @@
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    LiveTaskTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+//    LiveTaskTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
     
     
-        if (indexPath.section == 0) {
+    if (indexPath.section == 0) {
+        if ([statusStr isEqualToString:@"SEARCHING"]) {
+            LiveTaskIncomeTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"LiveTaskIncomeTableViewCell"];
             
-            if (getLivetaskArr.count == 0) {
-                
-                cell.waitingView.hidden = NO;
+          if (getLivetaskArr.count == 0) {
+            
+            //    cell.waitingView.hidden = NO;
                 cell.listcontentView.hidden = YES;
-
                 if ([self.liveTaskObj.transporterObj.status isEqualToString:@"unsettled"]) {
-                    
-                    cell.waitingImg.image = [UIImage imageNamed:@"handOverCash"];
-                    cell.waitingtaskLbl.text = NSLocalizedString(@"PLEASESETTLEAMOUNTLABEL", nil);
-                    cell.waitingtaskLbl.font = [UIFont fontWithName:FONT_REGULAR size:12.0];
-
+//                    cell.waitingImg.image = [UIImage imageNamed:@"handOverCash"];
+//                    cell.waitingtaskLbl.text = NSLocalizedString(@"PLEASESETTLEAMOUNTLABEL", nil);
+//                    cell.waitingtaskLbl.font = [UIFont fontWithName:FONT_REGULAR size:12.0];
                 }
                 else if([self.liveTaskObj.transporterObj.status isEqualToString:@"offline"])
                 {
-                    
                     tableView.tableHeaderView.tintColor = [UIColor clearColor];
-                    cell.waitingImg.image = [UIImage imageNamed:@"purchase"];
-                    cell.waitingtaskLbl.text = NSLocalizedString(@"TAPSHIFTLABEL", nil);
-                    cell.waitingtaskLbl.font = [UIFont fontWithName:FONT_REGULAR size:14.0];
+//                    cell.waitingImg.image = [UIImage imageNamed:@"purchase"];
+//                    cell.waitingtaskLbl.text = NSLocalizedString(@"TAPSHIFTLABEL", nil);
+//                    cell.waitingtaskLbl.font = [UIFont fontWithName:FONT_REGULAR size:14.0];
                     
                 }else{
-                    cell.waitingImg.image = [UIImage imageNamed:@"hour-glass"];
-                    cell.waitingtaskLbl.text = NSLocalizedString(@"WAITINGFORTASKLBL", nil);
-                    cell.waitingtaskLbl.font = [UIFont fontWithName:FONT_REGULAR size:16.0];
-                    
+//                    cell.waitingImg.image = [UIImage imageNamed:@"hour-glass"];
+//                    cell.waitingtaskLbl.text = NSLocalizedString(@"WAITINGFORTASKLBL", nil);
+//                    cell.waitingtaskLbl.font = [UIFont fontWithName:FONT_REGULAR size:16.0];
                 }
             }
             else{
                 
-                cell.waitingView.hidden = YES;
+                cell.acceptBtn.hidden = NO;
+                cell.cancelBtn.hidden = NO;
                 cell.listcontentView.hidden = NO;
-
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                
                 self.liveTaskObj = (LiveTaskObj *)[getLivetaskArr objectAtIndex:indexPath.row];
                 
                 cell.celltopView.backgroundColor = LIVETASKCOLOR;
@@ -512,6 +545,7 @@
                 cell.topOrderLabel.text = NSLocalizedString(@"NEWORDERREQUESTLABEL", nil);
                 cell.topOrderLabel.textColor = [UIColor whiteColor];
                 [Theme regularFontlabel:cell.fewSecondAgo];
+                // cell.fewSecondAgo.hidden = YES;
                 cell.orderImg.layer.cornerRadius = 4;
                 
                 [Theme regularFontlabel:cell.restaurentName];
@@ -519,37 +553,117 @@
                 
                 [Theme smallLabel:cell.orderLbl];
                 cell.orderLbl.textColor = DESCCOLOR;
-                if ([statusStr isEqualToString:@"SEARCHING"]) {
-                    cell.fewSecondAgo.hidden = NO;
-                    NSString *str = [NSString stringWithFormat:@"%d secs left",secondsLeft];
-                    cell.fewSecondAgo.text =str;
-                    cell.fewSecondAgo.textColor = [UIColor whiteColor];
-                    cell.acceptBtn.hidden = NO;
-                    cell.rejectBtn.hidden = NO;
-                    cell.acceptBtn.tag = indexPath.row;
-                    cell.rejectBtn.tag = indexPath.row;
-
-                    [cell.acceptBtn addTarget:self action:@selector(acceptBtnAction:) forControlEvents:UIControlEventTouchUpInside];
-                    
-                    [cell.rejectBtn addTarget:self action:@selector(rejectBtnAction:) forControlEvents:UIControlEventTouchUpInside];
-                }else{
-                    cell.fewSecondAgo.hidden = YES;
-                    cell.acceptBtn.hidden = YES;
-                    cell.rejectBtn.hidden = YES;
-                }
                 
                 cell.restaurentName.text = self.liveTaskObj.shopObj.name;
                 cell.orderLbl.text = self.liveTaskObj.shopObj.address;
                 [cell.orderImg sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",self.liveTaskObj.shopObj.avatar]] placeholderImage:[UIImage imageNamed:@"user"]];
                 
                 cell.celltopView.backgroundColor = BASECOLOR;
-            }
-        }else{
+                
+                cell.fewSecondAgo.text = responseTimeStr;
+                [cell.acceptBtn addTarget:self action:@selector(acceptBtnAction:) forControlEvents:UIControlEventTouchUpInside];
+                [cell.cancelBtn addTarget:self action:@selector(rejectBtnAction:) forControlEvents:UIControlEventTouchUpInside];
+                
+           }
             
+            cell.listcontentView.layer.cornerRadius = 4.0f;
+            cell.listcontentView.clipsToBounds = YES;
+            cell.fewSecondAgo.textColor = [UIColor whiteColor];
+            
+            cell.listcontentView.layer.shadowOffset = CGSizeMake(0, 0);
+            cell.listcontentView.layer.shadowColor = [[UIColor blackColor] CGColor];
+            cell.listcontentView.layer.shadowRadius = 2;
+            cell.listcontentView.layer.shadowOpacity =0.2;
+            cell.listcontentView.layer.masksToBounds = NO;
+            
+            cell.acceptBtn.titleLabel.font = [UIFont fontWithName:FONT_BOLD size:16];
+            cell.cancelBtn.titleLabel.font = [UIFont fontWithName:FONT_BOLD size:16];
+            
+            [cell.acceptBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [cell.cancelBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [cell.acceptBtn setBackgroundColor:RGB(84, 181, 138)];
+            [cell.cancelBtn setBackgroundColor:[UIColor redColor]];
+            
+            [cell.viewH setBackgroundColor:[UIColor clearColor]];
+            [cell.viewV setBackgroundColor:[UIColor clearColor]];
+            
+            return cell;
+        }
+        else{
+            LiveTaskTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+            
+            if (getLivetaskArr.count == 0) {
+                cell.waitingView.hidden = NO;
+                cell.listcontentView.hidden = YES;
+                if ([self.liveTaskObj.transporterObj.status isEqualToString:@"unsettled"]) {
+                    cell.waitingImg.image = [UIImage imageNamed:@"handOverCash"];
+                    cell.waitingtaskLbl.text = NSLocalizedString(@"PLEASESETTLEAMOUNTLABEL", nil);
+                    cell.waitingtaskLbl.font = [UIFont fontWithName:FONT_REGULAR size:12.0];
+                }
+                else if([self.liveTaskObj.transporterObj.status isEqualToString:@"offline"])
+                {
+                    tableView.tableHeaderView.tintColor = [UIColor clearColor];
+                    cell.waitingImg.image = [UIImage imageNamed:@"purchase"];
+                    cell.waitingtaskLbl.text = NSLocalizedString(@"TAPSHIFTLABEL", nil);
+                    cell.waitingtaskLbl.font = [UIFont fontWithName:FONT_REGULAR size:14.0];
+                    
+                }else{
+                    cell.waitingImg.image = [UIImage imageNamed:@"hour-glass"];
+                    cell.waitingtaskLbl.text = NSLocalizedString(@"WAITINGFORTASKLBL", nil);
+                    cell.waitingtaskLbl.font = [UIFont fontWithName:FONT_REGULAR size:16.0];
+                }
+            }
+            else{
+                cell.waitingView.hidden = YES;
+                cell.listcontentView.hidden = NO;
+                
+                self.liveTaskObj = (LiveTaskObj *)[getLivetaskArr objectAtIndex:indexPath.row];
+                
+                cell.celltopView.backgroundColor = LIVETASKCOLOR;
+                [Theme regularFontlabel:cell.topOrderLabel];
+                cell.orderImg.clipsToBounds = YES;
+                cell.orderImg.layer.cornerRadius = 4.0f;
+                cell.topOrderLabel.text = NSLocalizedString(@"NEWORDERREQUESTLABEL", nil);
+                cell.topOrderLabel.textColor = [UIColor whiteColor];
+                [Theme regularFontlabel:cell.fewSecondAgo];
+                cell.fewSecondAgo.hidden = YES;
+                cell.orderImg.layer.cornerRadius = 4;
+                
+                [Theme regularFontlabel:cell.restaurentName];
+                cell.restaurentName.textColor = [UIColor blackColor];
+                
+                [Theme smallLabel:cell.orderLbl];
+                cell.orderLbl.textColor = DESCCOLOR;
+                
+                cell.restaurentName.text = self.liveTaskObj.shopObj.name;
+                cell.orderLbl.text = self.liveTaskObj.shopObj.address;
+                [cell.orderImg sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",self.liveTaskObj.shopObj.avatar]] placeholderImage:[UIImage imageNamed:@"user"]];
+                
+                cell.celltopView.backgroundColor = BASECOLOR;
+                
+                cell.fewSecondAgo.text = responseTimeStr;
+               // [cell.acceptBtn addTarget:self action:@selector(acceptBtn:) forControlEvents:UIControlEventTouchUpInside];
+              //  [cell.cancelBtn addTarget:self action:@selector(cancelBtn:) forControlEvents:UIControlEventTouchUpInside];
+                
+            }
+            
+            cell.listcontentView.layer.cornerRadius = 4.0f;
+            cell.listcontentView.clipsToBounds = YES;
+            
+            cell.listcontentView.layer.shadowOffset = CGSizeMake(0, 0);
+            cell.listcontentView.layer.shadowColor = [[UIColor blackColor] CGColor];
+            cell.listcontentView.layer.shadowRadius = 2;
+            cell.listcontentView.layer.shadowOpacity =0.2;
+            cell.listcontentView.layer.masksToBounds = NO;
+            
+            return cell;
+        }
+        
+    }else{
+        LiveTaskTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+
             self.liveTaskObj = (LiveTaskObj *)[completedfoodArr objectAtIndex:indexPath.row];
             cell.waitingView.hidden = YES;
-            cell.acceptBtn.hidden = YES;
-            cell.rejectBtn.hidden = YES;
             cell.listcontentView.hidden = NO;
 
             cell.topOrderLabel.textColor = [UIColor whiteColor];
@@ -586,19 +700,24 @@
             
             [Theme smallLabel:cell.orderLbl];
             cell.orderLbl.textColor = DESCCOLOR;
+        
+        
+        cell.listcontentView.layer.cornerRadius = 4.0f;
+        cell.listcontentView.clipsToBounds = YES;
+        
+        cell.listcontentView.layer.shadowOffset = CGSizeMake(0, 0);
+        cell.listcontentView.layer.shadowColor = [[UIColor blackColor] CGColor];
+        cell.listcontentView.layer.shadowRadius = 2;
+        cell.listcontentView.layer.shadowOpacity =0.2;
+        cell.listcontentView.layer.masksToBounds = NO;
+        
+        return cell;
         }
     
-    cell.listcontentView.layer.cornerRadius = 4.0f;
-    cell.listcontentView.clipsToBounds = YES;
-    
-    cell.listcontentView.layer.shadowOffset = CGSizeMake(0, 0);
-    cell.listcontentView.layer.shadowColor = [[UIColor blackColor] CGColor];
-    cell.listcontentView.layer.shadowRadius = 2;
-    cell.listcontentView.layer.shadowOpacity =0.2;
-    cell.listcontentView.layer.masksToBounds = NO;
-    
-    return cell;
+   
 }
+
+
 
 - (void)cellDataInsert:(LiveTaskTableViewCell *)getCell liveObject:(LiveTaskObj *)getObj{
 
